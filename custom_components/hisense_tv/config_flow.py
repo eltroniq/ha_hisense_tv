@@ -48,7 +48,6 @@ class HisenseTvFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self._discovered_ip = None
         self._discovered_name = None
         self._mac_address = None
-        self._client_id = self._mac_address
         self._pin = None
 
     @property
