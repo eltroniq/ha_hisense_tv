@@ -921,7 +921,7 @@ class HisenseTvEntity(MediaPlayerEntity, HisenseTvBase):
             payload = json.dumps(
                 {
                   "url": app.get("url"),
-                  "isunInstalled": false,
+                  "isunInstalled": False,
                   "name": app.get("name"),
                   "from": app.get("from"),
                   "storeType": app.get("storeType"),
