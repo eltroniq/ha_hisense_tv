@@ -54,8 +54,8 @@ class HisenseTvBase(object):
         ip_address: str,
     ):
         self._hass = hass
-        self._mqtt_in = mqtt_in or "/"
-        self._mqtt_out = mqtt_out or "/"
+        self._mqtt_in = mqtt_in or ""
+        self._mqtt_out = mqtt_out or ""
         self._mac = mac
         self._client = mac
         self._ip_address = ip_address
