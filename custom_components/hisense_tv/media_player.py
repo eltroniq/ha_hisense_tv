@@ -776,45 +776,10 @@ class HisenseTvEntity(MediaPlayerEntity, HisenseTvBase):
             children=[],
         )
 
-        #  get getdeviceinfo
-        stream_deviceinfo, unsubscribe_deviceinfo = await mqtt_pub_sub(
-            hass=self._hass,
-            pub=self._out_topic("/remoteapp/tv/platform_service/%s/actions/getdeviceinfo"),
-            sub=self._in_topic("/remoteapp/mobile/%s/platform_service/data/getdeviceinfo"),
-        )
-
-        transport_protocol = None
-        try:
-            async for msg in stream_deviceinfo:
-                try:
-                    payload_string = msg[0].payload
-                    if payload_string is None:
-                        _LOGGER.debug("Skipping empty device info")
-                        break
-                    payload = json.loads(payload_string)
-                    transport_protocol = payload.get("transport_protocol")
-                    _LOGGER.debug("Transport Protocol: %s", transport_protocol)
-                except JSONDecodeError as err:
-                    _LOGGER.warning(
-                        "Could not parse device info from '%s': %s", msg, err.msg
-                    )
-                break
-        except asyncio.TimeoutError:
-            _LOGGER.debug("Timeout error - getdeviceinfo")
-        finally:
-            unsubscribe_deviceinfo()
-
-        # dynamic topic based on available transport_protocol
-        vidaaapplist_topic = (
-            "/remoteapp/tv/ui_service/%s/actions/vidaaapplist"
-            if transport_protocol and str(transport_protocol) != "1140"
-            else "/remoteapp/tv/ui_service/%s/actions/applist"
-        )
-
         # get applist
         stream_get, unsubscribe_applist = await mqtt_pub_sub(
             hass=self._hass,
-            pub=self._out_topic(vidaaapplist_topic),
+            pub=self._out_topic("/remoteapp/tv/ui_service/%s/actions/applist"),
             sub=self._in_topic("/remoteapp/mobile/%s/ui_service/data/applist"),
         )
 
@@ -955,10 +920,12 @@ class HisenseTvEntity(MediaPlayerEntity, HisenseTvBase):
             app = self._app_list.get(media_id)
             payload = json.dumps(
                 {
-                    "appId": media_id,
-                    "name": app.get("name"),
-                    "url": app.get("url"),
-                    "storeType": app.get("storeType"),
+                  "url": app.get("url"),
+                  "isunInstalled": false,
+                  "name": app.get("name"),
+                  "from": app.get("from"),
+                  "storeType": app.get("storeType"),
+                  "appId": media_id
                 }
             )
             await mqtt.async_publish(
