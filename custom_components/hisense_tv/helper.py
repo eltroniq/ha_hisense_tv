@@ -57,6 +57,7 @@ class HisenseTvBase(object):
         self._mqtt_in = mqtt_in or "/"
         self._mqtt_out = mqtt_out or "/"
         self._mac = mac
+        self._client = mac
         self._ip_address = ip_address
         self._unique_id = uid
         self._icon = (
@@ -70,9 +71,6 @@ class HisenseTvBase(object):
             "volume": lambda: None,
             "sourcelist": lambda: None,
         }
-
-    def _client(self):
-        return self._mac
 
     def _out_topic(self, topic=""):
         try:

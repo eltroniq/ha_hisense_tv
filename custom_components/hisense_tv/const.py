@@ -2,9 +2,9 @@
 
 # Attributes
 ATTR_CODE = "auth_code"
-CONF_MQTT_IN = "" 
+CONF_MQTT_IN = "mqtt_in" 
 CONF_KEY_DELAY = "key_delay"
-CONF_MQTT_OUT = ""
+CONF_MQTT_OUT = "mqtt_out"
 DATA_KEY = "media_player.hisense_tv"
 DEFAULT_CLIENT_ID = "HomeAssistant"
 DEFAULT_MQTT_PREFIX = ""
