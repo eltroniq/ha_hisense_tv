@@ -48,9 +48,13 @@ class HisenseTvFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self._discovered_ip = None
         self._discovered_name = None
         self._mac_address = None
-        self._client_id = DEFAULT_CLIENT_ID
+        self._client_id = self._mac_address
         self._pin = None
 
+    @property
+    def _client_id(self):
+        return self._mac_address
+    
     async def async_step_ssdp(self, discovery_info: SsdpServiceInfo) -> FlowResult:
         """Handle discovery via SSDP."""
         # Fetch and parse the description XML to get detailed device info.
